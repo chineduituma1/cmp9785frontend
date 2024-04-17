@@ -15,12 +15,56 @@ import {
   Text,
   useColorModeValue,
   Link,
+  useToast,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
-export default function SignupPage() {
+import Page from "@/app/profile/page";
+
+const Register: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const submitRegistration = async () => {
+    try {
+      setIsLoggedIn(true);
+
+      const requestData = {
+        email: email,
+        hashed_password: password,
+      };
+
+      const response = await fetch("http://127.0.0.1:8000/api/create_user", {
+        method: "POST",
+        headers: {
+          accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestData),
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error("Sign up Failed");
+      } else {
+        setIsLoggedIn(true);
+      }
+    } catch (error) {
+      setIsLoggedIn(false);
+      setErrorMessage("Email already exists");
+    }
+  };
+
+  const handleSubmit = () => {
+    submitRegistration();
+  };
+  if (isLoggedIn) {
+    return <Page />;
+  }
 
   return (
     <Flex
@@ -42,28 +86,22 @@ export default function SignupPage() {
           p={8}
         >
           <Stack spacing={4}>
-            <HStack>
-              <Box>
-                <FormControl id="firstName" isRequired>
-                  <FormLabel>First Name</FormLabel>
-                  <Input type="text" />
-                </FormControl>
-              </Box>
-              <Box>
-                <FormControl id="lastName">
-                  <FormLabel>Last Name</FormLabel>
-                  <Input type="text" />
-                </FormControl>
-              </Box>
-            </HStack>
             <FormControl id="email" isRequired>
               <FormLabel>Email address</FormLabel>
-              <Input type="email" />
+              <Input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </FormControl>
             <FormControl id="password" isRequired>
               <FormLabel>Password</FormLabel>
               <InputGroup>
-                <Input type={showPassword ? "text" : "password"} />
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
                 <InputRightElement h={"full"}>
                   <Button
                     variant={"ghost"}
@@ -82,9 +120,8 @@ export default function SignupPage() {
                 size="lg"
                 bg={"blue.400"}
                 color={"white"}
-                _hover={{
-                  bg: "teal.500",
-                }}
+                _hover={{ bg: "teal.500" }}
+                onClick={handleSubmit}
               >
                 Sign up
               </Button>
@@ -94,4 +131,6 @@ export default function SignupPage() {
       </Stack>
     </Flex>
   );
-}
+};
+
+export default Register;
