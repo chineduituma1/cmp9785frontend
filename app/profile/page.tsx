@@ -130,7 +130,7 @@ const Profile: React.FC<ProfileProps> = () => {
         color="white"
       >
         <Box mt={10} pl={3}>
-          <Link href="https://mega.nz/file/S8sCwbKC#9LVGIxE3zQI68T3R9_OHZn57RRE4nfdIYQAG9M7MFyM">
+          <Link href="https://mega.nz/file/SotQQQjb#-5K_hOkLdm9ydX6V49PlNlCl5OqnPmwkozdc1PohMIw">
             Documentation
           </Link>
         </Box>
