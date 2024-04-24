@@ -125,13 +125,19 @@ const Profile: React.FC<ProfileProps> = () => {
       <Flex
         w="15%"
         flexDir="column"
-        alignItems="center"
+        alignItems="left"
         backgroundColor="teal"
         color="white"
       >
+        <Box mt={10} pl={3}>
+          <Link href="https://mega.nz/file/S8sCwbKC#9LVGIxE3zQI68T3R9_OHZn57RRE4nfdIYQAG9M7MFyM">
+            Documentation
+          </Link>
+        </Box>
+
         <Button
           as={"a"}
-          mt="1800px"
+          mt="750px"
           rounded={"full"}
           px={6}
           colorScheme={"orange"}

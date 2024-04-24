@@ -20,7 +20,7 @@ import {
 import { useState, useContext } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
-import Page from "@/app/profile/page";
+import Page from "@/app/signin/page";
 
 const Register: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -28,6 +28,8 @@ const Register: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const toast = useToast();
 
   const submitRegistration = async () => {
     try {
@@ -52,9 +54,25 @@ const Register: React.FC = () => {
         throw new Error("Sign up Failed");
       } else {
         setIsLoggedIn(true);
+        toast({
+          title: "Sign Up successful.",
+          description: "Kindly log in.",
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+          position: "bottom-left",
+        });
       }
     } catch (error) {
       setIsLoggedIn(false);
+      toast({
+        title: "Sign Up failed.",
+        description: "Email already exists.",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+        position: "bottom-left",
+      });
       setErrorMessage("Email already exists");
     }
   };
